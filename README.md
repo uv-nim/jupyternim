@@ -29,7 +29,7 @@ Done!
 In case you are running jupyter from within an anaconda environment make sure the kernel is copied into the proper directory:
 
 ```
-cp -r \~/.local/share/jupyter/kernels/jupyternimspec ~/anaconda3/share/jupyter/kernels/
+cp -r ~/.local/share/jupyter/kernels/jupyternimspec ~/anaconda3/share/jupyter/kernels/
 ```
 
 ### Prereqs
