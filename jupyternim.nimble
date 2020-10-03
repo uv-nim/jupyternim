@@ -1,7 +1,7 @@
 # Package
 
-version       = "0.6.1"
-author        = "stisa"
+version       = "0.6.3"
+author        = "stisa", "ugovaretto" #I am just a contributor, is there a way to add contributors?
 description   = "A Jupyter Kernel for Nim"
 license       = "MIT"
 
