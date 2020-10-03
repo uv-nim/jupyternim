@@ -8,7 +8,6 @@
       "type": "shell",
       "command": "nimble install -y"
     },
-    // these depends on having an install in nimble
     {
       "label": "Build debug non-hcr",
       "type": "shell",
@@ -22,7 +21,10 @@
     {
       "label": "Build debug hcr",
       "type": "shell",
-      "command": "nimble hcr"
+      "command": "nimble hcr",
+      "problemMatcher": [
+        "$gcc"
+      ]
     },
     {
       "label": "Build release hcr",

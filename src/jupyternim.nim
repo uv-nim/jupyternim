@@ -1,5 +1,7 @@
 import ./jupyternimpkg/[sockets, messages, utils]
 import os, json
+#needed to fix zmqdll name
+import strutils
 
 when (NimMajor, NimMinor, NimPatch) > (1,3,5): # Changes in devel
   import std/exitprocs
@@ -9,7 +11,9 @@ from strutils import contains, strip
 
 import dynlib # to check for zmq
 
+
 from zmq import zmqdll # to check against the name nim-zmq uses
+
 
 ## A Jupyter Kernel for Nim.  
 ## 
@@ -66,8 +70,13 @@ proc installKernelSpec() =
   copyDir(pkgDir / "jupyternimspec", kernelspecdir)
   
   echo "[Jupyternim] Nim kernel registered, you can now try it in `jupyter lab`"
-  
-  var zmql = loadLib(zmqdll)
+  #wrong: zmqdll name might not be an actual file name, on Linux
+  #       zmqdll maps to "libzmq.so(.4|.5|)" this might be a bug in the zmq
+  #       package because in the case of Windows and MacOS its mapped
+  #       to an actual file/link name but in the case of Linux it is not
+  #var zmql = loadLib(zmqdll)
+  let zmqdllName = if zmqdll.endsWith(")"): zmqdll.split("(")[0] else: zmqdll
+  let zmql = loadLib(zmqdllName)
   echo "[Jupyternim] Found zmq library: ", not zmql.isNil()
   if zmql.isNil():
     echo "[Jupyternim] WARNING: No zmq library could be found, please install it"
