@@ -2,6 +2,7 @@ import ./jupyternimpkg/[sockets, messages, utils]
 import os, json
 #needed to fix zmqdll name
 import strutils
+include ./jupyternimpkg/version
 
 when (NimMajor, NimMinor, NimPatch) > (1,3,5): # Changes in devel
   import std/exitprocs
@@ -52,7 +53,7 @@ proc installKernelSpec() =
 
   let kernelspec = %*{
     "argv": [pathToJN, "{connection_file}"],
-    "display_name": "Nim",
+    "display_name": "NIM - Jupyternim " & JUPYTERNIM_VERSION,
     "language": "nim",
     "file_extension": ".nim"}
 
@@ -64,10 +65,11 @@ proc installKernelSpec() =
   #  getEnv("APPDATA") & "jupyter" / "kernels" (Windows)
   # should be equivalent to `jupyter-kernelspec install pkgDir/jupyternimspec --user`
   let kernelspecdir = when defined windows:  getEnv("APPDATA") / "jupyter" / "kernels" / "jupyternimspec"
-                      elif defined(macosx) or defined(macos): r"~/Library/Jupyter/kernels" / "jupyternimspec" 
-                      elif defined linux: "~/.local/share/jupyter/kernels" / "jupyternimspec"
+                      elif defined(macosx) or defined(macos): getHomeDir() / "Library/Jupyter/kernels" / "jupyternimspec" 
+                      elif defined linux: getHomeDir() / ".local/share/jupyter/kernels" / "jupyternimspec"
   echo "[Jupyternim] Copying Jupyternim kernelspec to ", kernelspecdir
   copyDir(pkgDir / "jupyternimspec", kernelspecdir)
+  echo "copied to " & kernelspecdir
   
   echo "[Jupyternim] Nim kernel registered, you can now try it in `jupyter lab`"
   #wrong: zmqdll name might not be an actual file name, on Linux
