@@ -9,7 +9,7 @@ import nimPNG
 
 type DisplayKind* = enum
   ## Kind of data to be shown
-  dkPng, dkPlot, dkFile, dkTextFile, dkImageFile, dkHtml
+  dkPng, dkPlot, dkFile, dkTextFile, dkImageFile, dkHtml, dkMIMEFile
 
 const startmarker = "#<jndd>#"
 const endmarker = "#<outjndd>#"
@@ -34,6 +34,19 @@ proc showImgFile*(what:string, w:int=480,h:int=320):JsonNode =
   result = %*{
     "data": {mime: payload }, # TODO: handle other mimetypes
     "metadata": %*{mime: {"width": w, "height":h}},
+    "transient": %* {}
+  }
+
+proc showMIMEFile*(what:string):JsonNode =
+  ## For `dkImageFile`. Reads the file to a string and encode it as base64.
+  ## Can set width and height of the output.
+  let mime = mimeDB.getMimetype(what.splitFile().ext)
+  var payload = readFile(what)
+  if mime != "image/svg+xml":
+    payload = payload.encode
+  result = %*{
+    "data": {mime: payload},
+    "metadata": %*{},
     "transient": %* {}
   }
 
@@ -72,7 +85,7 @@ proc showBase64StringPng*(what:string, w:int=480,h:int=320): JsonNode =
 
 proc showHtml*(what:string): JsonNode =
   result = %*{
-      "data": {"text/html": what}, # TODO: handle other mimetypes
+      "data": {"text/html": readFile(what)}, # TODO: handle other mimetypes
       "metadata" : %*{},
       "transient": %*{}
   }
@@ -103,7 +116,9 @@ template show*(kind:DisplayKind, what:untyped) =
   elif kind == dkFile:
     content = showBinaryFile(what)
   elif kind == dkHtml:
-    content == showHtml(what)
+    content = showHtml(what)
+  elif kind == dkMIMEFile:
+    content = showMIMEFile(what)
   elif kind == dkPlot:
     content = showBase64StringPng(what, size[0], size[1])
   else:

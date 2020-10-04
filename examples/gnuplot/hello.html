@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <script src="js/canvasmath.js"></script>
+<script src="js/gnuplot_common.js"></script>
+<script src="js/gnuplot_dashedlines.js"></script>
+<script src="js/gnuplot_mouse.js"></script>
+<title>Gnuplot Canvas Graph</title>
+</head>
+<body>
+  <h1>
+    HELLO
+  </h1>
+  <canvas height="400" id="approximate_1" width="800"></canvas>
+  <script src="./approximate.1.js">
+  </script>
+<script>
+  if (window.attachEvent) {window.attachEvent('onload', approximate_1);}
+  else if (window.addEventListener) {window.addEventListener('load', approximate_1, false);}
+  else {document.addEventListener('load', approximate_1, false);}
+  gnuplot.grid_lines = false;
+  gnuplot.zoom = true;
+</script>
+</body>
+</html>
