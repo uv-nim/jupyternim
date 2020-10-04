@@ -102,6 +102,8 @@ template show*(kind:DisplayKind, what:untyped) =
     content = showImgFile(what)
   elif kind == dkFile:
     content = showBinaryFile(what)
+  elif kinf == dkHtml:
+    content == showHtml(what)
   elif kind == dkPlot:
     content = showBase64StringPng(what, size[0], size[1])
   else:
