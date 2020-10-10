@@ -26,12 +26,6 @@ Done!
 
 `jupyternim -v` has some details about how it was compiled.
 
-In case you are running jupyter from within an anaconda environment make sure the kernel is copied into the proper directory:
-
-```
-cp -r ~/.local/share/jupyter/kernels/jupyternimspec ~/anaconda3/share/jupyter/kernels/
-```
-
 ### Prereqs
 
 - a working `nim` installation ( [download](http://nim-lang.org/download.html) )
